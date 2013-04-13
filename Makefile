@@ -11,10 +11,10 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
 
-bin/%.o : %.cpp creer
+bin/%.o : %.cpp bin/
 	$(CC) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
 
-creer:
+bin/:
 	mkdir bin
 
 

@@ -58,7 +58,7 @@ void MoteurPhysique::gererLesEvenements()
 {
 	sf::Event evenement;
 	sf::Vector2i positionSourisEcran;
-	positionSourisEcran=sf::Mouse::getPosition();// à utiliser pour enlever la possibilité de cliquer  da ns;(j yterface : avancement : interface principalement, un peu de travail non encore terminé sur un gestionnaire de ressource... ( voir fichier objets.h entre autre )
+    positionSourisEcran=sf::Mouse::getPosition(*m_app);// à utiliser pour enlever la possibilité de cliquer  da ns;(j yterface : avancement : interface principalement, un peu de travail non encore terminé sur un gestionnaire de ressource... ( voir fichier objets.h entre autre )
 	m_coordonneesSouris=m_app->mapPixelToCoords(positionSourisEcran);
 	while(m_app->pollEvent(evenement))
 	{
