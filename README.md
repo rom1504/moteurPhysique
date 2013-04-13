@@ -2,6 +2,8 @@ moteurPhysique
 
 Gestion de plusieurs entités et de leur déplacement. On peut aussi construire une unité à partir du batiment.
 
+##Compiler
+
 Pour compiler :
  * Installer SFML 2.0 :
   * télécharger https://github.com/LaurentGomila/SFML/archive/2.0.tar.gz
