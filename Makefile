@@ -11,12 +11,16 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
 
-bin/%.o : %.cpp bin/
+bin/%.o : %.cpp bin/empty
 	$(CC) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
-
-bin/:
-	mkdir bin
+	
+bin/empty:
+	mkdir -p bin
+	touch bin/empty
 
 
 run: $(EXECUTABLE)
 	$(EXECUTABLE)
+
+clean:
+	rm -rf bin
