@@ -5,7 +5,7 @@ MoteurPhysique::MoteurPhysique()
 	m_app=new sf::RenderWindow(sf::VideoMode(800, 600, 32), "SFML Graphics");
 	m_vue=new sf::View(sf::FloatRect(0,0,800,600));
 	m_app->setView(*m_vue);
-	m_textureSol.loadFromFile("image/herbe.png");
+	m_textureSol.loadFromFile("image/ground.png");
 	m_spriteSol.setTexture(m_textureSol);
 	m_spriteSol.setScale(20/m_spriteSol.getLocalBounds().width,20/m_spriteSol.getLocalBounds().height);
 	srand((unsigned)time(0));

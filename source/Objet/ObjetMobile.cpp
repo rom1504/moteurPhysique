@@ -12,7 +12,7 @@ void ObjetMobile::aFinitDeSeDeplacer()
 {
 	if(m_construire)
 	{
-		m_objets.push_back(new Batiment(m_imageBatiment,x()+(largeur())*1.1,hauteur(),m_objets,m_proprietaire,*(m_sprite.getTexture())));
+		m_objets.push_back(new Batiment(m_imageBatiment,x()+(largeur())*1.1,y()+hauteur(),m_objets,m_proprietaire,*(m_sprite.getTexture())));
 	}
 }
 

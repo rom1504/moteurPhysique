@@ -59,7 +59,7 @@ void Interface::actualiserSelection()
 
 bool Interface::recevoirEvenement(sf::Event & evenement)
 {
-	sf::Vector2i positionSourisEcrani=sf::Mouse::getPosition();
+	sf::Vector2i positionSourisEcrani=sf::Mouse::getPosition(*m_rendu);
 	sf::Vector2f positionSourisEcran=sf::Vector2f(positionSourisEcrani);
 	if(evenement.type==sf::Event::MouseButtonReleased && evenement.mouseButton.button==sf::Mouse::Left)
 	{
