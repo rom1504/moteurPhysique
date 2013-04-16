@@ -1,6 +1,6 @@
 #include "ObjetMobile.h"
 
-ObjetMobile::ObjetMobile(const sf::Texture & image,const sf::Texture & imageBatiment,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) : Objet(image,x,y,objets,proprietaire,numero),m_seDeplace(false),m_vitesse(350),m_imageBatiment(imageBatiment)
+ObjetMobile::ObjetMobile(const sf::Texture & image,const sf::Texture & imageBatiment,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) : Objet(image,x,y,objets,proprietaire,numero),m_seDeplace(false),m_vitesse(350),m_imageBatiment(imageBatiment),m_construire(false)
 {
 	m_type=0;
 	m_destination.x=x;// foireux mais fonctionnel : objectif: régler le problème du aller à en réseau ( décalage de la position de base ) : doit être régler par la suite par une transmission de la variable se_deplace ( trouver un type bool compatible avec le type packet de la sfml )
@@ -10,10 +10,8 @@ ObjetMobile::ObjetMobile(const sf::Texture & image,const sf::Texture & imageBati
 
 void ObjetMobile::aFinitDeSeDeplacer()
 {
-	if(m_construire)
-	{
-		m_objets.push_back(new Batiment(m_imageBatiment,x()+(largeur())*1.1,y()+hauteur(),m_objets,m_proprietaire,*(m_sprite.getTexture())));
-	}
+	if(m_construire) m_objets.push_back(new Batiment(m_imageBatiment,x()+(largeur())*1.1,y()+hauteur(),m_objets,m_proprietaire,*(m_sprite.getTexture())));
+	m_tacheEnCours=false;
 }
 
 void ObjetMobile::deplacer()
@@ -32,11 +30,7 @@ void ObjetMobile::deplacer()
 		//for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if(*i!=&(*this) && sontEnCollision(nouveauSprite,(*i)->sprite())) return;
 		m_sprite.move(xAC,yAC);
 	}
-	if(AB<AC)
-	{
-		m_tacheEnCours=false;
-		aFinitDeSeDeplacer();// ici pourrait se faire l'utilisation d'un signal personnalisé ( boost ou quoi ... )
-	}
+	if(AB<AC) aFinitDeSeDeplacer();// ici pourrait se faire l'utilisation d'un signal personnalisé ( boost ou quoi ... )
 }
 
 const sf::Vector2f ObjetMobile::destination() const

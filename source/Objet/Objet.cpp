@@ -70,11 +70,15 @@ void Objet::agirAuClicDroit(sf::Vector2f position,bool ajouterALaQueue,int typeT
 
 void Objet::agir()
 {
-	if(m_tacheEnCours) continuerAAgirVraiment();
+	if(m_tacheEnCours)
+	{
+		continuerAAgirVraiment();
+	}
 	else if(!m_ordres.empty()) // faire une tache après l'autre : utile si la tâche n'est pas instantannée et pas génant sinon
 	{
 		m_tacheEnCours=true;
-		agirVraiment(m_ordres.front());//tester pop_front
+		Tache &t=m_ordres.front();
+		agirVraiment(t);//tester pop_front
 		m_ordres.pop();
 	}
 }

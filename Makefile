@@ -8,10 +8,10 @@ vpath %.cpp source:source/Objet:source/Bouton:source/Reseau:source/Interface
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) Makefile
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
 
-bin/%.o : %.cpp bin/empty
+bin/%.o : %.cpp bin/empty Makefile
 	$(CC) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
 	
 bin/empty:

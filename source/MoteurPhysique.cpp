@@ -45,12 +45,12 @@ MoteurPhysique::MoteurPhysique()
 	std::cin>>truc;
 	if(truc=="serveur")
 	{*/
-		m_threadServeur=new sf::Thread(&Serveur::Run, &m_serveur);
-		m_threadServeur->launch();
+		//m_threadServeur=new sf::Thread(&Serveur::Run, &m_serveur);
+		//m_threadServeur->launch();
 	//}
 	m_client=new Client(m_objets,m_imageChien,m_imageMaison,m_proprietaire);
-	m_threadClient=new sf::Thread(&Client::Run, m_client);
-	m_threadClient->launch();
+	//m_threadClient=new sf::Thread(&Client::Run, m_client);
+	//m_threadClient->launch();
 	m_horloge.restart();
 }
 
@@ -65,7 +65,7 @@ void MoteurPhysique::gererLesEvenements()
 		if(m_interface->recevoirEvenement(evenement));
 		else
 		{
-			if(evenement.type==sf::Event::Closed) {m_threadClient->terminate();m_threadServeur->terminate();m_app->close();}
+			if(evenement.type==sf::Event::Closed) {/*m_threadClient->terminate();m_threadServeur->terminate();*/m_app->close();}
 			else if(evenement.type==sf::Event::MouseWheelMoved) m_vue->zoom(1+(float)(evenement.mouseWheel.delta)/10);
 			if(positionSourisEcran.y<=550)
 			{
@@ -132,8 +132,8 @@ void MoteurPhysique::gererLesEvenements()
 
 void MoteurPhysique::traiter()
 {
-	//for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) (*i)->agir();// : à voir semble déclencher une segmentation fault mais aucune idée pourquoi
-	for(std::vector<Objet*>::iterator i=m_objets.begin(),e=m_objets.end();i!=e;++i) (*i)->agir();
+	std::vector<Objet*> tobjets=m_objets;
+	for(std::vector<Objet*>::iterator i=tobjets.begin(),e=tobjets.end();i!=e;++i) (*i)->agir();
 	if(m_rectangleSelectionAffiche)
 	{
 		float x1,x2,y1,y2;
