@@ -2,6 +2,8 @@
 
 Gestion de plusieurs entités et de leur déplacement. On peut aussi construire une unité à partir du batiment.
 
+Gestion de base des êtres vivants : animaux et plantes. Les deux peuvent se reproduire, les animaux essayent de manger les plantes.
+
 ![moteurPhysique](moteurPhysique.png "Exemple")
 
 ##Compiler
