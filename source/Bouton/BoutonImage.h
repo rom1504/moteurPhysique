@@ -2,7 +2,6 @@
 #define DEF_BOUTONIMAGE
 
 #include "Bouton.h"
-#include "../Conversion.h"
 #include <iostream>
 
 class BoutonImage : public Bouton,public sf::Sprite
