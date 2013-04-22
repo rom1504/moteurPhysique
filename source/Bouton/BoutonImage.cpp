@@ -8,5 +8,5 @@ BoutonImage::BoutonImage(const sf::Vector2f position,const sf::Vector2f taille,c
 
 bool BoutonImage::clicked(const sf::Vector2f positionSouris) const
 {
-	return sf::FloatRect(positionSouris.x,positionSouris.y,1,1).intersects(rectangleFDeSprite(*this));
+    return sf::FloatRect(positionSouris.x,positionSouris.y,1,1).intersects(getGlobalBounds());
 }

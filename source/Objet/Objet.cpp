@@ -2,7 +2,8 @@
 
 bool Objet::enCollision(const Objet * objet) const
 {
-    return rectangleFDeSprite(m_sprite).intersects(rectangleFDeSprite(objet->m_sprite));
+//    return rectangleFDeSprite(m_sprite).intersects(rectangleFDeSprite(objet->m_sprite));
+    return fcontour().intersects(objet->fcontour());
 }
 
 Objet::Objet(const sf::Texture & image,float x,float y,float w,float h,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) : m_objets(objets),m_tacheEnCours(false),m_proprietaire(proprietaire),m_tempsEcoule(0),m_selectionne(false)
@@ -157,12 +158,12 @@ void Objet::continuerAAgirVraiment()
 
 sf::FloatRect Objet::fcontour() const
 {
-	return rectangleFDeSprite(m_sprite);
+    return m_sprite.getGlobalBounds();
 }
 
 sf::IntRect Objet::icontour() const
 {
-	return rectangleIDeSprite(m_sprite);
+    return sf::IntRect(fcontour());
 }
 
 bool Objet::selectionne() const

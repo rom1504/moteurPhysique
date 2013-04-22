@@ -26,8 +26,6 @@ source/Reseau/Client.cpp
 source/Reseau/Client.h
 source/Reseau/Serveur.cpp
 source/Reseau/Serveur.h
-source/Conversion.cpp
-source/Conversion.h
 source/main.cpp
 source/MoteurPhysique.cpp
 source/MoteurPhysique.h
@@ -57,3 +55,15 @@ Makefile
 source/Objet/Unite.h
 source/Objet/Unite.cpp
 README.md
+description.txt
+.gitignore
+image/vache.png
+image/maison.png
+image/herbe.png
+image/ground.png
+image/chien.png
+image/vache.jpeg
+image/herbe2.jpg
+image/herbe.jpg
+image/chat.gif
+moteurPhysique.png

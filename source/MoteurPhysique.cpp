@@ -63,7 +63,7 @@ MoteurPhysique::MoteurPhysique()
 	m_app->setFramerateLimit(30);
 	m_rectangleSelectionAffiche=false;
 	m_police.loadFromFile("police/arial.ttf");
-	m_boutonTexte=new BoutonTexte(sf::Vector2f(positionBaseX+100,positionBaseY+100),m_police,m_proprietaire);
+//    m_boutonTexte=new BoutonTexte(sf::Vector2f(positionBaseX+100,positionBaseY+100),m_police,"lala\n\lolo\nlulu"m_proprietaire);
 	/*std::string truc;
 	std::cin>>truc;
 	if(truc=="serveur")
@@ -202,7 +202,7 @@ void MoteurPhysique::afficher()
         r.setOutlineThickness(m_vue->getSize().x/800);
         m_app->draw(r);
 	}
-	//m_app->draw(*m_boutonTexte);
+    //m_app->draw(*m_boutonTexte);
 	m_app->setView(m_app->getDefaultView());
 	m_interface->afficher();
 	m_app->setView(*m_vue);
