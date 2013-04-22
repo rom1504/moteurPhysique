@@ -47,3 +47,13 @@ texte/todo_liste_moteurPhysique.txt
 texte/todoliste25062011.txt
 texte/uml.zargo
 session
+source/EtreVivant/Plante.h
+source/EtreVivant/EtreVivant.h
+source/EtreVivant/Animal.h
+source/EtreVivant/Plante.cpp
+source/EtreVivant/EtreVivant.cpp
+source/EtreVivant/Animal.cpp
+Makefile
+source/Objet/Unite.h
+source/Objet/Unite.cpp
+README.md

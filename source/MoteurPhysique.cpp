@@ -19,24 +19,47 @@ MoteurPhysique::MoteurPhysique()
 	tempImgMaison.createMaskFromColor(sf::Color(255,255,255));
 	m_imageChien.loadFromImage(tempImgChien);
 	m_imageMaison.loadFromImage(tempImgMaison);
+	
+	sf::Image tempImgVache;
+	tempImgVache.loadFromFile("image/vache.png");
+	tempImgVache.createMaskFromColor(sf::Color(255,255,255));
+	m_imageVache.loadFromImage(tempImgVache);
+	
+	
+	sf::Image tempImgChat;
+    tempImgChat.loadFromFile("image/chat.gif");
+	tempImgChat.createMaskFromColor(sf::Color(255,255,255));
+	m_imageChat.loadFromImage(tempImgChat);
+	
+	
+	m_imageHerbe.loadFromFile("image/herbe2.jpg");
+	
+	
 	std::ostringstream out;
 	out<<rand()%10000;
 	m_proprietaire=out.str();
 	m_interface=new Interface(m_app,m_objets,m_proprietaire);
 	
 	
-	ObjetMobile * nouveau;
 	m_vue->setCenter(positionBaseX+400,positionBaseY+300);
-	for(int xi=positionBaseX+50;xi<=positionBaseX+700;xi+=100)
-	{
-		for(int yi=positionBaseY+50;yi<=positionBaseY+500;yi+=100)
-		{
-			nouveau=new ObjetMobile(m_imageChien,m_imageMaison,(float)(xi),(float)(yi),m_objets,m_proprietaire);
-			//nouveau->allerA((float)sf::Randomizer::Random(50,750),(float)sf::Randomizer::Random(50,550));
-			m_objets.push_back(nouveau);
-		}
-	}
-	m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,m_objets,m_proprietaire,m_imageChien));
+// 	for(int xi=positionBaseX+50;xi<=positionBaseX+700;xi+=100)
+// 	{
+// 		for(int yi=positionBaseY+50;yi<=positionBaseY+500;yi+=100)
+// 		{
+// 			m_objets.push_back(new Unite(m_imageChat,m_imageMaison,(float)(xi),(float)(yi),28.0,28.0,350,m_objets,m_proprietaire));
+// 		}
+// 	}
+	
+// 	m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,50.0,50.0,m_objets,m_proprietaire,m_imageChat));
+	
+    m_objets.push_back(new Animal(60,65,200,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
+	
+    m_objets.push_back(new Animal(60,65,205,20,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
+	
+    m_objets.push_back(new Plante(2.0,5,2.2,4.5,10,m_imageHerbe,positionBaseX+500,positionBaseY+50,m_objets,m_proprietaire));
+	
+    m_objets.push_back(new Plante(2.0,5,2.2,4.5,9,m_imageHerbe,positionBaseX+540,positionBaseY+100,m_objets,m_proprietaire));
+	
 	m_app->setFramerateLimit(30);
 	m_rectangleSelectionAffiche=false;
 	m_police.loadFromFile("police/arial.ttf");
@@ -48,7 +71,7 @@ MoteurPhysique::MoteurPhysique()
 		//m_threadServeur=new sf::Thread(&Serveur::Run, &m_serveur);
 		//m_threadServeur->launch();
 	//}
-	m_client=new Client(m_objets,m_imageChien,m_imageMaison,m_proprietaire);
+	m_client=new Client(m_objets,m_imageChat,m_imageMaison,m_proprietaire);
 	//m_threadClient=new sf::Thread(&Client::Run, m_client);
 	//m_threadClient->launch();
 	m_horloge.restart();
@@ -142,7 +165,7 @@ void MoteurPhysique::traiter()
 		x2=std::max(m_positionDebutSelection.x,m_coordonneesSouris.x);
 		y2=std::max(m_positionDebutSelection.y,m_coordonneesSouris.y);
 		m_rectangleSelection=new sf::FloatRect(x1,y1,std::abs(x2-x1),std::abs(y2-y1));
-		for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if(!((sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) && (*i)->selectionne())) (*i)->setSelectionne(m_rectangleSelection->intersects(rectangleFDeSprite((*i)->sprite())));
+		for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if(!((sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) && (*i)->selectionne())) (*i)->setSelectionne(m_rectangleSelection->intersects((*i)->fcontour()));
 		m_interface->actualiserSelection();
 	}
 }
@@ -162,10 +185,10 @@ void MoteurPhysique::afficher()
 	m_app->setView(*m_vue);
 	for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i)
 	{
-		m_app->draw((*i)->sprite());
+		(*i)->draw(m_app);
 		sf::RectangleShape r;
-		r.setPosition((*i)->sprite().getPosition().x-1,(*i)->sprite().getPosition().y-1);
-		r.setSize(sf::Vector2f((*i)->sprite().getGlobalBounds().width+1,(*i)->sprite().getGlobalBounds().height+1));
+		r.setPosition((*i)->x()-1,(*i)->y()-1);
+		r.setSize(sf::Vector2f((*i)->largeur()+1,(*i)->hauteur()+1));
 		r.setFillColor(m_interface->objetSelectionne()==(*i) ? sf::Color(0,0,255,100) : sf::Color(255,255,0,100));
 		if((*i)->selectionne()) m_app->draw(r);
 	}
@@ -179,7 +202,7 @@ void MoteurPhysique::afficher()
         r.setOutlineThickness(m_vue->getSize().x/800);
         m_app->draw(r);
 	}
-	m_app->draw(*m_boutonTexte);
+	//m_app->draw(*m_boutonTexte);
 	m_app->setView(m_app->getDefaultView());
 	m_interface->afficher();
 	m_app->setView(*m_vue);

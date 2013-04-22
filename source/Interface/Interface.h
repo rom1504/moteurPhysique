@@ -11,7 +11,7 @@
 class BoutonObjet : public BoutonImage
 {
 	public:
-	BoutonObjet(const sf::Vector2f position,const sf::Texture & image,Objet * objetLie);
+	BoutonObjet(const sf::Vector2f position,const sf::Vector2f taille,const sf::Texture & image,Objet * objetLie);
 	Objet * objetLie();
 	
 	private:

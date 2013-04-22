@@ -2,11 +2,13 @@
 #define DEF_MOTEURPHYSIQUE
 
 #include <SFML/Graphics.hpp>
-#include "Objet/ObjetMobile.h"
+#include "Objet/Unite.h"
 #include "Objet/Batiment.h"
 #include "Bouton/BoutonTexte.h"
 #include "Bouton/BoutonImage.h"
 #include "Interface/Interface.h"
+#include "EtreVivant/Animal.h"
+#include "EtreVivant/Plante.h"
 #include <vector>
 #include <algorithm>
 #include "Reseau/Serveur.h"
@@ -37,6 +39,9 @@ class MoteurPhysique
 	sf::Sprite m_spriteSol;
 	sf::Texture m_imageChien;
 	sf::Texture m_imageMaison;
+	sf::Texture m_imageVache;
+	sf::Texture m_imageChat;
+	sf::Texture m_imageHerbe;
 	
 	//atributs divers
 	Interface * m_interface;

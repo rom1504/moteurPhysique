@@ -8,7 +8,7 @@
 class BoutonImage : public Bouton,public sf::Sprite
 {
 	public:
-	BoutonImage(const sf::Vector2f position,const sf::Texture & image);
+	BoutonImage(const sf::Vector2f position,const sf::Vector2f taille,const sf::Texture & image);
 	bool clicked(const sf::Vector2f positionSouris) const;
 	
 };

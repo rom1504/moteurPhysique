@@ -1,14 +1,15 @@
 #include "Objet.h"
 
-bool sontEnCollision(const sf::Sprite & sprite1,const sf::Sprite & sprite2)
+bool Objet::enCollision(const Objet * objet) const
 {
-	return rectangleFDeSprite(sprite1).intersects(rectangleFDeSprite(sprite2));
+    return rectangleFDeSprite(m_sprite).intersects(rectangleFDeSprite(objet->m_sprite));
 }
 
-Objet::Objet(const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) : m_selectionne(false),m_objets(objets),m_proprietaire(proprietaire),m_tacheEnCours(false)
+Objet::Objet(const sf::Texture & image,float x,float y,float w,float h,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) : m_objets(objets),m_tacheEnCours(false),m_proprietaire(proprietaire),m_tempsEcoule(0),m_selectionne(false)
 {
 	m_sprite.setTexture(image);
 	m_sprite.setPosition(x,y);
+	m_sprite.setScale(w/largeur(),h/hauteur());
 	m_numero=numero!=-1 ? numero : (m_objets.empty() ? 1 : (m_objets.back())->numero()+1);
 }
 
@@ -20,6 +21,38 @@ float Objet::largeur() const
 float Objet::hauteur() const
 {
 	return m_sprite.getGlobalBounds().height;
+}
+
+Objet * Objet::plusProcheObjet(std::vector<Objet*> &objets) const
+{
+    auto it=std::min_element(objets.begin(),objets.end(),std::bind(std::mem_fn(&Objet::plusPres),this,_1,_2));
+    if(it!=objets.end()) return *it;
+    else return NULL;
+}
+
+Objet * Objet::plusProcheObjet() const
+{
+    return plusProcheObjet(m_objets);
+}
+
+bool Objet::estDeType(int type) const
+{
+    return m_type==type;
+}
+
+std::vector<Objet*> Objet::pasMoi() const
+{
+    std::vector<Objet*> objets;
+    remove_copy(m_objets.begin(),m_objets.end(),std::back_inserter(objets),this);
+    return objets;
+}
+
+std::vector<Objet*> Objet::objetsDeType(int type) const
+{
+    auto obs=pasMoi();
+    std::vector<Objet*> objets;
+    std::copy_if(obs.begin(), obs.end(),std::back_inserter(objets), std::bind(std::mem_fn(&Objet::estDeType),_1,type));
+    return objets;
 }
 
 bool comparabley(const Objet * a,const Objet * b)
@@ -35,6 +68,11 @@ bool triPlacement::operator()(const Objet * objet1,const Objet * objet2) const
 	else return false;
 }
 
+sf::Vector2f Objet::position() const
+{
+    return m_sprite.getPosition();
+}
+
 float Objet::x() const 
 {
 	return m_sprite.getPosition().x;
@@ -48,6 +86,16 @@ float Objet::y() const
 Objet::~Objet()
 {
 	
+}
+
+void Objet::draw(sf::RenderWindow* target)
+{
+	target->draw(m_sprite);
+}
+
+const sf::Texture * Objet::texture() const
+{
+	return m_sprite.getTexture();
 }
 
 void Objet::setSelectionne(bool selectionne)
@@ -68,8 +116,22 @@ void Objet::agirAuClicDroit(sf::Vector2f position,bool ajouterALaQueue,int typeT
 	m_ordres.push(tache);
 }
 
+double Objet::distanceAvec(const Objet * o) const
+{
+    return sqrt((x()-o->x())*(x()-o->x())+(y()-o->y())*(y()-o->y()));
+}
+
+
+bool Objet::plusPres(const Objet * o1,const Objet * o2) const
+{
+    return distanceAvec(o1)<distanceAvec(o2);
+}
+
 void Objet::agir()
 {
+    m_tempsEcoule=m_horloge.getElapsedTime().asSeconds();
+    m_horloge.restart();
+    agirAChaqueFois();
 	if(m_tacheEnCours)
 	{
 		continuerAAgirVraiment();
@@ -83,19 +145,29 @@ void Objet::agir()
 	}
 }
 
+void Objet::agirAChaqueFois()
+{
+
+}
+
 void Objet::continuerAAgirVraiment()
 {
 	
 }
 
+sf::FloatRect Objet::fcontour() const
+{
+	return rectangleFDeSprite(m_sprite);
+}
+
+sf::IntRect Objet::icontour() const
+{
+	return rectangleIDeSprite(m_sprite);
+}
+
 bool Objet::selectionne() const
 {
 	return m_selectionne;
-}
-
-const sf::Sprite & Objet::sprite() const
-{
-	return m_sprite;
 }
 
 const std::string Objet::proprietaire() const

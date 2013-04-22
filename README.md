@@ -2,6 +2,8 @@
 
 Gestion de plusieurs entités et de leur déplacement. On peut aussi construire une unité à partir du batiment.
 
+![moteurPhysique](moteurPhysique.png "Exemple")
+
 ##Compiler
 
 Pour compiler :
@@ -13,3 +15,4 @@ Pour compiler :
   * sudo make install
  * puis dans le dossier de ce projet :
   * make ou bien utiliser qtcreator : qtcreator moteurPhysique.creator
+

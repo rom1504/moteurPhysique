@@ -1,7 +1,7 @@
 #include "Interface.h"
 
 
-BoutonObjet::BoutonObjet(const sf::Vector2f position,const sf::Texture & image,Objet * objetLie) : BoutonImage(position,image),m_objetLie(objetLie)
+BoutonObjet::BoutonObjet(const sf::Vector2f position,const sf::Vector2f taille,const sf::Texture & image,Objet * objetLie) : BoutonImage(position,taille,image),m_objetLie(objetLie)
 {
 	
 }
@@ -19,8 +19,7 @@ Interface::Interface(sf::RenderWindow * rendu,std::vector<Objet*> & objets,std::
 	tempImgMaison.loadFromFile("image/maison.png");
 	tempImgMaison.createMaskFromColor(sf::Color(255,255,255));
 	m_imageMaison.loadFromImage(tempImgMaison);
-	m_boutonConstruction=new BoutonImage(sf::Vector2f(605,555),m_imageMaison);
-	m_boutonConstruction->setScale(20/m_boutonConstruction->getLocalBounds().width,20/m_boutonConstruction->getLocalBounds().height);
+	m_boutonConstruction=new BoutonImage(sf::Vector2f(605,555),sf::Vector2f(20,20),m_imageMaison);
 	m_boutonObjetMobile=false;
 	m_construction=0;
 }
@@ -33,14 +32,10 @@ void Interface::actualiserSelection()
 	sf::Vector2f position;
 	position.x=20;
 	position.y=550;
-	sf::Vector2f echelle;
-	echelle.x=0.5;
-	echelle.y=0.5;
 	bool premier=true;
-	for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->selectionne() && (*i)->proprietaire()==m_proprietaire) 
+    for(auto i=m_objets.begin();i!=m_objets.end();++i) if((*i)->selectionne() && (*i)->proprietaire()==m_proprietaire)
 	{
-		boutonTemp=new BoutonObjet(position,*((*i)->sprite().getTexture()),*i);
-		boutonTemp->scale(echelle);
+		boutonTemp=new BoutonObjet(position,sf::Vector2f(20,20),*((*i)->texture()),*i);
 		m_bouton.push_back(boutonTemp);
 		if(position.x>=380)
 		{
@@ -63,7 +58,7 @@ bool Interface::recevoirEvenement(sf::Event & evenement)
 	sf::Vector2f positionSourisEcran=sf::Vector2f(positionSourisEcrani);
 	if(evenement.type==sf::Event::MouseButtonReleased && evenement.mouseButton.button==sf::Mouse::Left)
 	{
-		for(std::vector<BoutonObjet*>::iterator i=m_bouton.begin();i!=m_bouton.end();++i) if((*i)->clicked(positionSourisEcran)) 
+        for(auto i=m_bouton.begin();i!=m_bouton.end();++i) if((*i)->clicked(positionSourisEcran))
 		{
 			m_objetSelectionne=(*i)->objetLie(); // faire une apparance dans le menu pour la selection
 			if(m_objetSelectionne->type()!=0) m_boutonObjetMobile=false;
@@ -106,7 +101,7 @@ void Interface::afficher()
 	l2.setFillColor(sf::Color::White);
 	m_rendu->draw(l2);
 	if(m_boutonObjetMobile) m_rendu->draw(*m_boutonConstruction);
-	for(std::vector<BoutonObjet*>::iterator i=m_bouton.begin();i!=m_bouton.end();++i)
+    for(auto i=m_bouton.begin();i!=m_bouton.end();++i)
 	{	
 		if((*i)->objetLie()==m_objetSelectionne)
 		{

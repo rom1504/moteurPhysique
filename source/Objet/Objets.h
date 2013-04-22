@@ -6,6 +6,8 @@
 #include "ObjetMobile.h"
 #include "Batiment.h"
 
+// utiliser ça
+
 class Objets : public std::vector<Objet*> // inutilisé : inutile ?
 {
 	public:
