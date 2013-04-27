@@ -52,13 +52,13 @@ MoteurPhysique::MoteurPhysique()
 	
 // 	m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,50.0,50.0,m_objets,m_proprietaire,m_imageChat));
 	
-    m_objets.push_back(new Animal(60,200,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
+    m_objets.push_back(new Animal(3,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
+
+    m_objets.push_back(new Animal(3,25,80,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Animal(60,205,25,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
+    m_objets.push_back(new Plante(4.0,10,m_imageHerbe,positionBaseX+400,positionBaseY+50,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Plante(2.0,10,m_imageHerbe,positionBaseX+500,positionBaseY+50,m_objets,m_proprietaire));
-	
-    m_objets.push_back(new Plante(2.0,9,m_imageHerbe,positionBaseX+540,positionBaseY+100,m_objets,m_proprietaire));
+    m_objets.push_back(new Plante(4.0,9,m_imageHerbe,positionBaseX+440,positionBaseY+100,m_objets,m_proprietaire));
 	
 	m_app->setFramerateLimit(30);
 	m_rectangleSelectionAffiche=false;
@@ -211,7 +211,7 @@ void MoteurPhysique::afficher()
     //m_app->draw(*m_boutonTexte);
 	m_app->setView(m_app->getDefaultView());
     m_app->draw(*(new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15)));
-    m_app->draw(*(new BoutonTexte(sf::Vector2f(600,70),m_police,"Nombre de plantes : "+std::to_string(Plante::m_nbPlantes),15)));
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(600,70),m_police,"Nombre de plantes : "+std::to_string(std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})),15)));
 	m_interface->afficher();
 	m_app->setView(*m_vue);
 	m_app->display();

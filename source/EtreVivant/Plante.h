@@ -10,21 +10,17 @@ class Plante : public EtreVivant
 
 
     double etreMange(double quantiteMange);
-    static int m_nbPlantes;
 
 	// gènes : constant
 	protected:
     void agirAChaqueFois();
     void pousser();
-    double augmenterEnergie(double q);
     void seReproduire(Plante * plante);
     void seReproduire(EtreVivant*);
     std::vector<EtreVivant*> etresVivantsPouvantSeReproduire() const;
     std::map<std::string,std::string> toStringMap() const;
-    virtual void mourrir();
 
     private:
-    double m_energieMaximum;
     double m_vitesseCroissance;
 		
 };

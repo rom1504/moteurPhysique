@@ -3,7 +3,9 @@
 EtreVivant::EtreVivant(double energie,const double geneCote,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) :
     Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero),m_energie(energie),m_rechercheReproduction(false),m_geneCote(geneCote)
 {
-	
+    m_energieMaximum=10/2*m_geneCote/10;
+    m_energiePourReproduction=5/2*m_geneCote/10;
+    m_horlogeVie.restart();
 }
 
 void EtreVivant::agirVraiment(Tache tache)
@@ -19,13 +21,21 @@ std::map<std::string,std::string> EtreVivant::toStringMap() const
     m["peut se reproduire"]=m_energie>=m_energiePourReproduction ? "oui" : "non";
     m["recherche la reproduction"]=m_rechercheReproduction ? "oui" : "non";
     m["geneCote"]=std::to_string(m_geneCote);
+    m["energieMaximum"]=std::to_string(m_energieMaximum);
+    m["temps de vie"]=std::to_string(m_horlogeVie.getElapsedTime().asSeconds());
     return m;
 }
 
 double EtreVivant::augmenterEnergie(double q)
 {
-    m_energie+=q;
-    return q;
+    double nEnergie=m_energie+q;
+    if(nEnergie<=m_energieMaximum)
+    {
+        m_energie=nEnergie;
+        return q;
+    }
+    m_energie=m_energieMaximum;
+    return m_energie-(nEnergie-q);
 }
 
 double EtreVivant::diminuerEnergie(double q)
@@ -89,11 +99,9 @@ double abs(double d)
 
 double EtreVivant::moyenneAleatoire(double a,double b,double facteur,double base)
 {
-    double u=rand(-base,base);
-    double v=abs(a-b);
-    double w=u+v;
-    double c=(a+b)/2+myrand(w,facteur);
-    return c>0 ? c : (a+b)/2+myrand(v,facteur);
+    double m=(a+b)/2;
+    double c=m+(((int)rand(0,2))==0 ? -1 : 1)*myrand(rand(-base,base)+abs(a-b),facteur);
+    return c>0 ? c : m;
 }
 
 EtreVivant * conv(Objet * o)

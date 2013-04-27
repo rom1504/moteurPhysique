@@ -34,6 +34,9 @@ class EtreVivant: virtual public Objet
     double m_energie;
     double m_energiePourReproduction;
     bool m_rechercheReproduction;
+    double m_energieMaximum;
+
+    sf::Clock m_horlogeVie;
 	
 	// gènes : constant
 	const double m_geneCote;

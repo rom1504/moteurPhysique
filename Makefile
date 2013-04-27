@@ -101,7 +101,7 @@ Serveur.o: source/Reseau/Serveur.cpp source/Reseau/Serveur.h
 
 
 run: $(EXECUTABLE)
-	optirun $(EXECUTABLE)
+	$(EXECUTABLE)
 
 clean:
 	rm -rf bin
