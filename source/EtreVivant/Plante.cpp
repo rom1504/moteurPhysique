@@ -19,7 +19,7 @@ void Plante::agirAChaqueFois()
         return;
     }
     pousser();
-    if(m_energie>=m_energiePourReproduction && std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})<100) tenterDeSeReproduire();
+    if(m_energie>=m_energiePourReproduction && std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})<200) tenterDeSeReproduire();
 }
 
 double Plante::etreMange(double quantiteMange)

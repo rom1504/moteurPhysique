@@ -12,9 +12,16 @@ Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
     m_vitesseManger=m_geneCote;
 }
 
+double max(double a, double b)
+{
+    return a>b ? a : b;
+}
+
 void Animal::manger(Plante * p)
 {
-    changerEnergie(p->etreMange(m_vitesseManger*m_tempsEcoule));
+    double possibleDeManger=m_vitesseManger*m_tempsEcoule;
+    double essayerManger=max(possibleDeManger,m_energieMaximum-m_energie);
+    changerEnergie(p->etreMange(essayerManger));
 }
 
 std::map<std::string,std::string> Animal::toStringMap() const
@@ -42,7 +49,7 @@ void Animal::agirAChaqueFois()
         tenterDeSeReproduire();
 //        std::cout<<"lolo"<<std::endl;
     }
-    if(m_seDeplace) {/*std::cout<<"Je me déplace :) :)"<<std::endl;*/changerEnergie(-m_geneVitesse/120*m_tempsEcoule*m_geneCote/25);}
+    if(m_seDeplace) {/*std::cout<<"Je me déplace :) :)"<<std::endl;*/changerEnergie(-(m_geneVitesse/120+m_geneCote/40)*m_tempsEcoule/10);}
     using namespace std::placeholders;
     auto it = std::find_if (m_objets.begin(), m_objets.end(), std::bind(std::logical_and<bool>(),std::bind(std::mem_fn(&Objet::enCollision),this,_1),std::bind(std::mem_fn(&Objet::estDeType),_1,3)));
     if(it!=m_objets.end()) {/*std::cout<<"Je mange :) :)"<<std::endl;*/manger(dynamic_cast<Plante*>(*it));}
