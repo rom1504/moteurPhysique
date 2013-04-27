@@ -7,7 +7,7 @@
 class Animal : public EtreVivant,public ObjetMobile
 {
 	public:
-    Animal(double energie,const double energiePourReproduction,const double geneVitesseManger,const double geneCote,const double geneVitesse,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero=-1);
+    Animal(double energie,const double geneVitesseManger,const double geneCote,const double geneVitesse,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero=-1);
 
     void manger(Plante * p);
 
@@ -16,6 +16,7 @@ class Animal : public EtreVivant,public ObjetMobile
     void agirVraiment(Tache tache);
     void seReproduire(EtreVivant* etreVivant);
     void seReproduire(Animal * animal);
+    virtual std::map<std::string,std::string> toStringMap() const;
 
 	protected:
 	// gènes : constant

@@ -1,7 +1,7 @@
 #include "EtreVivant.h"
 
-EtreVivant::EtreVivant(double energie,double energiePourReproduction,const double geneCote,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) :
-    Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero),m_energie(energie),m_energiePourReproduction(energiePourReproduction),m_rechercheReproduction(false),m_geneCote(geneCote)
+EtreVivant::EtreVivant(double energie,const double geneCote,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero) :
+    Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero),m_energie(energie),m_rechercheReproduction(false),m_geneCote(geneCote)
 {
 	
 }
@@ -9,6 +9,17 @@ EtreVivant::EtreVivant(double energie,double energiePourReproduction,const doubl
 void EtreVivant::agirVraiment(Tache tache)
 {
 	
+}
+
+std::map<std::string,std::string> EtreVivant::toStringMap() const
+{
+    auto m=Objet::toStringMap();
+    m["energie"]=std::to_string(m_energie);
+    m["energie pour reproduction"]=std::to_string(m_energiePourReproduction);
+    m["peut se reproduire"]=m_energie>=m_energiePourReproduction ? "oui" : "non";
+    m["recherche la reproduction"]=m_rechercheReproduction ? "oui" : "non";
+    m["geneCote"]=std::to_string(m_geneCote);
+    return m;
 }
 
 double EtreVivant::augmenterEnergie(double q)
@@ -71,7 +82,8 @@ double EtreVivant::myrand(double i,double facteur)
 
 double EtreVivant::moyenneAleatoire(double a,double b,double facteur,double base)
 {
-    return (a+b)/2+myrand(rand(-base,base)+a-b,facteur);
+    double c=(a+b)/2+myrand(rand(-base,base)+a-b,facteur);
+    return c>0 ? c : 0.1;
 }
 
 EtreVivant * conv(Objet * o)

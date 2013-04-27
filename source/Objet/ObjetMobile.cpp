@@ -41,6 +41,14 @@ void ObjetMobile::deplacer()
     }
 }
 
+std::map<std::string,std::string> ObjetMobile::toStringMap() const
+{
+	auto m=Objet::toStringMap();
+	m["vitesse"]=std::to_string(m_vitesse);
+    m["se deplace"]=m_seDeplace ? "oui" : "non";
+	return m;
+}
+
 const sf::Vector2f ObjetMobile::destination() const
 {
 	return m_destination;

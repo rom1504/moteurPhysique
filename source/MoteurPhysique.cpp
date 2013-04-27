@@ -52,13 +52,13 @@ MoteurPhysique::MoteurPhysique()
 	
 // 	m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,50.0,50.0,m_objets,m_proprietaire,m_imageChat));
 	
-    m_objets.push_back(new Animal(60,65,200,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
+    m_objets.push_back(new Animal(60,200,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Animal(60,65,205,20,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
+    m_objets.push_back(new Animal(60,205,20,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Plante(2.0,5,2.2,4.5,10,m_imageHerbe,positionBaseX+500,positionBaseY+50,m_objets,m_proprietaire));
+    m_objets.push_back(new Plante(2.0,10,m_imageHerbe,positionBaseX+500,positionBaseY+50,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Plante(2.0,5,2.2,4.5,9,m_imageHerbe,positionBaseX+540,positionBaseY+100,m_objets,m_proprietaire));
+    m_objets.push_back(new Plante(2.0,9,m_imageHerbe,positionBaseX+540,positionBaseY+100,m_objets,m_proprietaire));
 	
 	m_app->setFramerateLimit(30);
 	m_rectangleSelectionAffiche=false;

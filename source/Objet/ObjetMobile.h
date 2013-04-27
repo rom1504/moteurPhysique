@@ -19,6 +19,7 @@ class ObjetMobile : virtual public Objet
 	void deplacer();
 	virtual void aFinitDeSeDeplacer();
     bool m_seDeplace;
+	virtual std::map<std::string,std::string> toStringMap() const;
 	
 	private://attributs divers
     sf::Vector2f m_destination;

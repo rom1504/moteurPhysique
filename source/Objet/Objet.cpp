@@ -1,4 +1,7 @@
 #include "Objet.h"
+#include <numeric>
+#include <functional>
+#include <algorithm>
 
 bool Objet::enCollision(const Objet * objet) const
 {
@@ -29,6 +32,20 @@ Objet * Objet::plusProcheObjet(std::vector<Objet*> &objets) const
     auto it=std::min_element(objets.begin(),objets.end(),std::bind(std::mem_fn(&Objet::plusPres),this,_1,_2));
     if(it!=objets.end()) return *it;
     else return NULL;
+}
+
+std::map<std::string,std::string> Objet::toStringMap() const
+{
+    std::map<std::string,std::string> m;
+    m["type"]=std::to_string((int)m_type);
+    return m;
+}
+
+
+std::string Objet::toString() const
+{
+    auto m=toStringMap();
+    return std::accumulate(m.begin(),m.end(),std::string(""),[](std::string s,std::pair<std::string,std::string> p) {return s+(p.first+": "+p.second+"\n");});
 }
 
 Objet * Objet::plusProcheObjet() const

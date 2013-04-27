@@ -9,6 +9,7 @@
 #include <queue>
 #include <cmath>
 #include <iostream>
+#include <map>
 
 struct Tache
 {
@@ -46,13 +47,15 @@ class Objet
     Objet * plusProcheObjet() const;
     std::vector<Objet*> objetsDeType(int type) const;
     std::vector<Objet*> pasMoi() const;
+    virtual std::string toString() const;
 	
     //vaudrait mieux mettre un max de truc en privé pour pouvoir changer Objet sans tout péter dans les classes qui héritent
 	protected:
 	virtual void agirVraiment(Tache tache)=0;//changer de nom ?...
 	virtual void continuerAAgirVraiment(); // pas forcé de redéfinir ( ne fait rien si non rédéfinit )
     virtual void agirAChaqueFois();
-	
+    virtual std::map<std::string,std::string> toStringMap() const;
+
 	protected://attributs divers
 	std::vector<Objet*> & m_objets;
 	std::queue<Tache> m_ordres;// pas fini

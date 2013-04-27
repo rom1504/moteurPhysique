@@ -11,7 +11,7 @@
 class EtreVivant: virtual public Objet
 {
 	public:
-    EtreVivant(double energie, double energiePourReproduction, const double geneCote, const sf::Texture & image, float x, float y, std::vector<Objet*> & objets, std::string proprietaire, sf::Int8 numero=-1);
+    EtreVivant(double energie, const double geneCote, const sf::Texture & image, float x, float y, std::vector<Objet*> & objets, std::string proprietaire, sf::Int8 numero=-1);
 
     static double rand(double min,double max);
     static double myrand(double i,double facteur=1.1);
@@ -29,6 +29,7 @@ class EtreVivant: virtual public Objet
     bool rechercheReproduction() const;
     virtual std::vector<EtreVivant*> etresVivantsPouvantSeReproduire() const;
 	//std::vector <const double*const> genes; // non : seulement dans la reproduction
+    virtual std::map<std::string,std::string> toStringMap() const;
 
     double m_energie;
     double m_energiePourReproduction;

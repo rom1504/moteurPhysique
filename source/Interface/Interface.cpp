@@ -22,6 +22,8 @@ Interface::Interface(sf::RenderWindow * rendu,std::vector<Objet*> & objets,std::
 	m_boutonConstruction=new BoutonImage(sf::Vector2f(605,555),sf::Vector2f(20,20),m_imageMaison);
 	m_boutonObjetMobile=false;
 	m_construction=0;
+    m_police.loadFromFile("police/arial.ttf");
+    m_objetSelectionne=NULL;
 }
 
 void Interface::actualiserSelection()
@@ -43,13 +45,14 @@ void Interface::actualiserSelection()
 			position.y+=20;
 		}
 		else position.x+=20;
-		if(premier && boutonTemp->objetLie()->type()==0)
-		{
-			premier=false;
-			m_objetSelectionne=boutonTemp->objetLie();
-		}
+        if(premier)
+        {
+            premier=false;
+            m_objetSelectionne=boutonTemp->objetLie();
+        }
 	}
-	m_boutonObjetMobile=!premier;
+    m_boutonObjetMobile=!premier && m_objetSelectionne->type()==0;
+    if(premier) m_objetSelectionne=NULL;
 }
 
 bool Interface::recevoirEvenement(sf::Event & evenement)
@@ -114,4 +117,9 @@ void Interface::afficher()
 		}
 		m_rendu->draw(**i);
 	}
+    if(m_objetSelectionne!=NULL)
+    {
+       BoutonTexte * bt=new BoutonTexte(sf::Vector2f(550,200),m_police,m_objetSelectionne->toString(),15);
+       m_rendu->draw(*bt);
+    }
 }

@@ -21,7 +21,7 @@ class BoutonObjet : public BoutonImage
 class Interface
 {
 	public:
-	Interface(sf::RenderWindow * rendu,std::vector<Objet*> & objets,std::string proprietaire);
+    Interface(sf::RenderWindow * rendu,std::vector<Objet*> & objets,std::string proprietaire);
 	void afficher();
 	void actualiserSelection();
 	bool recevoirEvenement(sf::Event & evenement);
@@ -37,6 +37,7 @@ class Interface
 	bool m_construction;
 	bool m_boutonObjetMobile;
 	sf::Texture m_imageMaison;
+    sf::Font m_police;
 };
 
 #endif
