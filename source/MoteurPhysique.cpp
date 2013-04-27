@@ -202,8 +202,12 @@ void MoteurPhysique::afficher()
         r.setOutlineThickness(m_vue->getSize().x/800);
         m_app->draw(r);
 	}
+
+
     //m_app->draw(*m_boutonTexte);
 	m_app->setView(m_app->getDefaultView());
+    BoutonTexte * a=new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15);
+    m_app->draw(*a);
 	m_interface->afficher();
 	m_app->setView(*m_vue);
 	m_app->display();

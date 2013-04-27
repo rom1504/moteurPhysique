@@ -80,10 +80,20 @@ double EtreVivant::myrand(double i,double facteur)
     return i;
 }
 
+double abs(double d)
+{
+    return d>0 ? d : -d;
+}
+
+
+
 double EtreVivant::moyenneAleatoire(double a,double b,double facteur,double base)
 {
-    double c=(a+b)/2+myrand(rand(-base,base)+a-b,facteur);
-    return c>0 ? c : 0.1;
+    double u=rand(-base,base);
+    double v=abs(a-b);
+    double w=u+v;
+    double c=(a+b)/2+myrand(w,facteur);
+    return c>0 ? c : (a+b)/2+myrand(v,facteur);
 }
 
 EtreVivant * conv(Objet * o)

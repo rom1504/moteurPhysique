@@ -31,7 +31,7 @@ std::map<std::string,std::string> Animal::toStringMap() const
 
 void Animal::agirAChaqueFois()
 {
-    changerEnergie(-m_tempsEcoule*3);//vieillesse
+    changerEnergie(-m_tempsEcoule*3*m_geneCote/25);//dépense d'énergie pour rester en vie
     // les conditions sont bien ici ?
     if(/*!(m_rechercheReproduction && m_seDeplace)*/ /*&& m_objets.size()<500*/ /*&&*/ m_energie>=m_energiePourReproduction)
     {
@@ -40,7 +40,7 @@ void Animal::agirAChaqueFois()
         tenterDeSeReproduire();
 //        std::cout<<"lolo"<<std::endl;
     }
-    if(m_seDeplace) {/*std::cout<<"Je me déplace :) :)"<<std::endl;*/changerEnergie(-m_geneVitesse/25*m_tempsEcoule);}
+    if(m_seDeplace) {/*std::cout<<"Je me déplace :) :)"<<std::endl;*/changerEnergie(-m_geneVitesse/25*m_tempsEcoule*m_geneCote/25);}
     using namespace std::placeholders;
     auto it = std::find_if (m_objets.begin(), m_objets.end(), std::bind(std::logical_and<bool>(),std::bind(std::mem_fn(&Objet::enCollision),this,_1),std::bind(std::mem_fn(&Objet::estDeType),_1,3)));
     if(it!=m_objets.end()) {/*std::cout<<"Je mange :) :)"<<std::endl;*/manger(dynamic_cast<Plante*>(*it));}

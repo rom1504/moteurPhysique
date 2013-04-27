@@ -25,7 +25,7 @@ class EtreVivant: virtual public Objet
     virtual double augmenterEnergie(double q);
     double changerEnergie(double q);
     void agirVraiment(Tache tache);
-    void mourrir();
+    virtual void mourrir();
     bool rechercheReproduction() const;
     virtual std::vector<EtreVivant*> etresVivantsPouvantSeReproduire() const;
 	//std::vector <const double*const> genes; // non : seulement dans la reproduction

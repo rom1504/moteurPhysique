@@ -1,5 +1,8 @@
 #include "Plante.h"
 #include <algorithm>
+#include <numeric>
+
+double Plante::m_nbPlantes=0;
 
 Plante::Plante(double energie, const double geneCote, const sf::Texture & image, float x, float y, std::vector<Objet*> & objets, std::string proprietaire, sf::Int8 numero) :
 Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
@@ -9,12 +12,21 @@ Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
     m_energieMaximum=2*m_energie*m_geneCote/10;
     m_energiePourReproduction=5/2*m_geneCote/10;
     m_vitesseCroissance=m_geneCote/10;
+    m_nbPlantes++;
+}
+
+
+void Plante::mourrir()
+{
+    EtreVivant::mourrir();
+    m_nbPlantes--;
 }
 
 void Plante::agirAChaqueFois()
-{
+{//static bien.... ?
+    //int nbPlante=std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;});
     pousser();
-    if(m_objets.size()<500 && m_energie>=m_energiePourReproduction) tenterDeSeReproduire();
+    if(m_nbPlantes<500 && m_energie>=m_energiePourReproduction) tenterDeSeReproduire();
 }
 
 double Plante::etreMange(double quantiteMange)
