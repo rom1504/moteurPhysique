@@ -31,7 +31,7 @@ std::map<std::string,std::string> Animal::toStringMap() const
 
 void Animal::agirAChaqueFois()
 {
-    changerEnergie(-m_tempsEcoule);//vieillesse
+    changerEnergie(-m_tempsEcoule*3);//vieillesse
     // les conditions sont bien ici ?
     if(/*!(m_rechercheReproduction && m_seDeplace)*/ /*&& m_objets.size()<500*/ /*&&*/ m_energie>=m_energiePourReproduction)
     {

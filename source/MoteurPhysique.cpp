@@ -54,7 +54,7 @@ MoteurPhysique::MoteurPhysique()
 	
     m_objets.push_back(new Animal(60,200,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
 	
-    m_objets.push_back(new Animal(60,205,20,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
+    m_objets.push_back(new Animal(60,205,25,60,m_imageVache,positionBaseX+125,positionBaseY+150,m_objets,m_proprietaire));
 	
     m_objets.push_back(new Plante(2.0,10,m_imageHerbe,positionBaseX+500,positionBaseY+50,m_objets,m_proprietaire));
 	
