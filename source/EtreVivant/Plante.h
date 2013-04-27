@@ -10,6 +10,7 @@ class Plante : public EtreVivant
 
 
     double etreMange(double quantiteMange);
+    static int m_nbPlantes;
 
 	// gènes : constant
 	protected:
@@ -25,7 +26,6 @@ class Plante : public EtreVivant
     private:
     double m_energieMaximum;
     double m_vitesseCroissance;
-    static double m_nbPlantes;
 		
 };
 

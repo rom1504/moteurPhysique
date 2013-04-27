@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <numeric>
 
-double Plante::m_nbPlantes=0;
+int Plante::m_nbPlantes=0;
 
 Plante::Plante(double energie, const double geneCote, const sf::Texture & image, float x, float y, std::vector<Objet*> & objets, std::string proprietaire, sf::Int8 numero) :
 Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
@@ -64,7 +64,7 @@ std::vector<EtreVivant*> Plante::etresVivantsPouvantSeReproduire() const
 {
     auto etresVivants=EtreVivant::etresVivantsPouvantSeReproduire();
     std::vector<EtreVivant*> etresVivants2;
-    std::copy_if(etresVivants.begin(), etresVivants.end(),std::back_inserter(etresVivants2), std::bind(std::less<double>(),std::bind(std::mem_fn(&Objet::distanceAvec),this,_1),100));
+    std::copy_if(etresVivants.begin(), etresVivants.end(),std::back_inserter(etresVivants2), std::bind(std::less<double>(),std::bind(std::mem_fn(&Objet::distanceAvec),this,_1),100*m_geneCote/10));
     return etresVivants2;
 }
 
@@ -75,9 +75,9 @@ void Plante::seReproduire(EtreVivant* etreVivant)
 
 void Plante::seReproduire(Plante * plante)
 {
-    double x_=moyenneAleatoire(x(),plante->x(),1.3,20);
-    double y_=moyenneAleatoire(y(),plante->y(),1.3,20);
     double geneCote=moyenneAleatoire(m_geneCote,plante->m_geneCote,1.01,0);
+    double x_=moyenneAleatoire(x(),plante->x(),1.3,20*geneCote/10);
+    double y_=moyenneAleatoire(y(),plante->y(),1.3,20*geneCote/10);
     m_objets.push_back(new Plante((m_energiePourReproduction+plante->m_energiePourReproduction)/2, geneCote, *texture(), x_, y_, m_objets, m_proprietaire));
     m_rechercheReproduction=false;
     plante->m_rechercheReproduction=false;

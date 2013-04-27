@@ -25,7 +25,7 @@ void ObjetMobile::deplacer()
 	float xA=x(),yA=y();
 	float xB=m_destination.x,yB=m_destination.y;
 	float AB=std::sqrt(std::pow(xB-xA,2)+std::pow(yB-yA,2));
-	if(AB!=0)
+    if(AB!=0 && AB>=AC)
 	{
 		float xAC=AB<AC ? xB-xA : (xB>xA ? 1 : -1)*(AC*std::abs(xB-xA))/AB;
 		float yAC=AB<AC ? yB-yA : (yB>yA ? 1 : -1)*(AC*std::abs(yB-yA))/AB;

@@ -170,6 +170,16 @@ void MoteurPhysique::traiter()
 	}
 }
 
+void MoteurPhysique::afficherObjet(Objet * o)
+{
+    o->draw(m_app);
+    sf::RectangleShape r;
+    r.setPosition(o->x()-1,o->y()-1);
+    r.setSize(sf::Vector2f(o->largeur()+1,o->hauteur()+1));
+    r.setFillColor(m_interface->objetSelectionne()==o ? sf::Color(0,0,255,100) : sf::Color(255,255,0,100));
+    if(o->selectionne()) m_app->draw(r);
+}
+
 void MoteurPhysique::afficher()
 {
 	m_app->clear();
@@ -183,15 +193,9 @@ void MoteurPhysique::afficher()
 		}
 	}
 	m_app->setView(*m_vue);
-	for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i)
-	{
-		(*i)->draw(m_app);
-		sf::RectangleShape r;
-		r.setPosition((*i)->x()-1,(*i)->y()-1);
-		r.setSize(sf::Vector2f((*i)->largeur()+1,(*i)->hauteur()+1));
-		r.setFillColor(m_interface->objetSelectionne()==(*i) ? sf::Color(0,0,255,100) : sf::Color(255,255,0,100));
-		if((*i)->selectionne()) m_app->draw(r);
-	}
+    for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->type()==3) afficherObjet(*i);
+    for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->type()!=3) afficherObjet(*i);
+
 	if(m_rectangleSelectionAffiche)
 	{
 		sf::RectangleShape r;
@@ -206,8 +210,8 @@ void MoteurPhysique::afficher()
 
     //m_app->draw(*m_boutonTexte);
 	m_app->setView(m_app->getDefaultView());
-    BoutonTexte * a=new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15);
-    m_app->draw(*a);
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15)));
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(600,70),m_police,"Nombre de plantes : "+std::to_string(Plante::m_nbPlantes),15)));
 	m_interface->afficher();
 	m_app->setView(*m_vue);
 	m_app->display();

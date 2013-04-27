@@ -28,6 +28,7 @@ class MoteurPhysique
 	void gererLesEvenements();
 	void afficher();
 	void traiter();
+    void afficherObjet(Objet * o);
 	
 	private:
 	//attributs principaux
