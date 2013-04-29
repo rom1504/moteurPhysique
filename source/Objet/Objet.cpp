@@ -38,6 +38,8 @@ std::map<std::string,std::string> Objet::toStringMap() const
 {
     std::map<std::string,std::string> m;
     m["type"]=std::to_string((int)m_type);
+    m["x"]=std::to_string(x());
+    m["y"]=std::to_string(y());
     return m;
 }
 

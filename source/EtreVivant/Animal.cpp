@@ -42,7 +42,7 @@ void Animal::agirAChaqueFois()
     }
     changerEnergie(-m_tempsEcoule/120*m_geneCote/25);//dépense d'énergie pour rester en vie
     // les conditions sont bien ici ?
-    if(/*!(m_rechercheReproduction && m_seDeplace)*/ /*&& m_objets.size()<500*/ /*&&*/ m_energie>=m_energiePourReproduction &&  std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==2 ? n+1 : n;})<30)
+    if(/*!(m_rechercheReproduction && m_seDeplace)*/ /*&& m_objets.size()<500*/ /*&&*/ m_energie>=m_energiePourReproduction &&  std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==2 ? n+1 : n;})<15)
     {
         m_seDeplace=false;
         m_tacheEnCours=false;
@@ -79,15 +79,18 @@ void Animal::seReproduire(Animal * animal)
     {
 //        mourrir();
 //        std::cout<<(int)animal->type()<<std::endl;
-        double x_=moyenneAleatoire(x(),animal->x(),1.3,20);
-        double y_=moyenneAleatoire(y(),animal->y(),1.3,20);
-        double geneCote=moyenneAleatoire(m_geneCote,animal->m_geneCote,1.3,0);
-        double geneVitesse=moyenneAleatoire(m_geneVitesse,animal->m_geneVitesse,1.3,0);
-        m_objets.push_back(new Animal((m_energiePourReproduction+animal->m_energiePourReproduction)/2, geneCote,geneVitesse, *texture(), x_, y_, m_objets, m_proprietaire));
-        m_rechercheReproduction=false;
-        animal->m_rechercheReproduction=false;
-        diminuerEnergie(m_energiePourReproduction/2/**geneCote/m_geneCote*/);
-        animal->diminuerEnergie(animal->m_energiePourReproduction/2/**geneCote/animal->m_geneCote*/);
+        double x_=moyenneAleatoire_old(x(),animal->x(),1.3,20);
+        double y_=moyenneAleatoire_old(y(),animal->y(),1.3,20);
+        double geneCote=moyenneAleatoire(m_geneCote,animal->m_geneCote,1.3);
+        double geneVitesse=moyenneAleatoire(m_geneVitesse,animal->m_geneVitesse,1.3);
+        if(x_>-500 && y_>-500 && x_+geneCote<500 && y_+geneCote<500)
+        {
+            m_objets.push_back(new Animal((m_energiePourReproduction+animal->m_energiePourReproduction)/2, geneCote,geneVitesse, *texture(), x_, y_, m_objets, m_proprietaire));
+            m_rechercheReproduction=false;
+            animal->m_rechercheReproduction=false;
+            diminuerEnergie(m_energiePourReproduction/2/**geneCote/m_geneCote*/);
+            animal->diminuerEnergie(animal->m_energiePourReproduction/2/**geneCote/animal->m_geneCote*/);
+        }
     }
     else
     {

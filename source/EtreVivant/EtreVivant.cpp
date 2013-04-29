@@ -97,12 +97,21 @@ double abs(double d)
 
 
 
-double EtreVivant::moyenneAleatoire(double a,double b,double facteur,double base)
+double EtreVivant::moyenneAleatoire_old(double a,double b,double facteur,double base)
 {
     double m=(a+b)/2;
     double c=m+(((int)rand(0,2))==0 ? -1 : 1)*myrand(rand(-base,base)+abs(a-b),facteur);
+    return c;
+}
+double EtreVivant::moyenneAleatoire(double a,double b,double facteur)
+{
+    double m=(a+b)/2;
+    double d=abs(a-b);
+    d=d==0 ? 1 : d;
+    double c=m*myrand(1,1+(m/d)/100);
     return c>0 ? c : m;
 }
+
 
 EtreVivant * conv(Objet * o)
 {

@@ -10,6 +10,8 @@ MoteurPhysique::MoteurPhysique()
 	m_spriteSol.setScale(20/m_spriteSol.getLocalBounds().width,20/m_spriteSol.getLocalBounds().height);
 	srand((unsigned)time(0));
 	int positionBaseX=500+rand()%7001,positionBaseY=500+rand()%5001;
+    positionBaseX=0;
+    positionBaseY=0;
 	m_spriteSol.setPosition(0,0);
 	sf::Image tempImgChien;
 	sf::Image tempImgMaison;

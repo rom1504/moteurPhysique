@@ -19,7 +19,7 @@ void Plante::agirAChaqueFois()
         return;
     }
     pousser();
-    if(m_energie>=m_energiePourReproduction && std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})<200) tenterDeSeReproduire();
+    if(m_energie>=m_energiePourReproduction && std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})<400) tenterDeSeReproduire();
 }
 
 double Plante::etreMange(double quantiteMange)
@@ -55,19 +55,21 @@ void Plante::seReproduire(EtreVivant* etreVivant)
 
 void Plante::seReproduire(Plante * plante)
 {
-    double geneCote=moyenneAleatoire(m_geneCote,plante->m_geneCote,1.01,0);
-    double x_=moyenneAleatoire(x(),plante->x(),1.3,10*geneCote/10);
-    double y_=moyenneAleatoire(y(),plante->y(),1.3,10*geneCote/10);
+    double geneCote=moyenneAleatoire(m_geneCote,plante->m_geneCote,1.01);
+    double x_=moyenneAleatoire_old(x(),plante->x(),1.3,10*geneCote/10);
+    double y_=moyenneAleatoire_old(y(),plante->y(),1.3,10*geneCote/10);
 
-
-    Plante * plante_=new Plante((m_energiePourReproduction+plante->m_energiePourReproduction)/2, geneCote, *texture(), x_, y_, m_objets, m_proprietaire);
-    if(!std::any_of (m_objets.begin(), m_objets.end(), std::bind(std::mem_fn(&Objet::enCollision),plante_,_1)))
+    if(x_>-500 && y_>-500 && x_+geneCote<500 && y_+geneCote<500)
     {
-        m_objets.push_back(plante_);
-        m_rechercheReproduction=false;
-        plante->m_rechercheReproduction=false;
-        diminuerEnergie(m_energiePourReproduction/2/**geneCote/m_geneCote*/);
-        plante->diminuerEnergie(plante->m_energiePourReproduction/2/**geneCote/plante->m_geneCote*/);
+        Plante * plante_=new Plante((m_energiePourReproduction+plante->m_energiePourReproduction)/2, geneCote, *texture(), x_, y_, m_objets, m_proprietaire);
+        if(!std::any_of (m_objets.begin(), m_objets.end(), std::bind(std::mem_fn(&Objet::enCollision),plante_,_1)))
+        {
+            m_objets.push_back(plante_);
+            m_rechercheReproduction=false;
+            plante->m_rechercheReproduction=false;
+            diminuerEnergie(m_energiePourReproduction/2/**geneCote/m_geneCote*/);
+            plante->diminuerEnergie(plante->m_energiePourReproduction/2/**geneCote/plante->m_geneCote*/);
+        }
     }
 
 }
