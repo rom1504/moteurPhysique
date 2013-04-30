@@ -14,7 +14,7 @@ void Batiment::agirVraiment(Tache tache)
 void Batiment::creerUnite(sf::Vector2f position)
 {
 	Unite * nouveau=new Unite(m_imageUniteCree,*(m_sprite.getTexture()),x()+largeur()+5,y()+(largeur())/2,28,28,350,m_objets,m_proprietaire);
-    for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)!=nouveau && nouveau->enCollision(*i)) return;
+    for(Objet * o : m_objets) if(o!=nouveau && nouveau->enCollision(o)) return;
 	nouveau->agirAuClicDroit(position,0,0);
 	m_objets.push_back(nouveau);
 }

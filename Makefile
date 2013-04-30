@@ -1,11 +1,11 @@
 CC=g++
 CFLAGS=-Wall -std=c++11
 LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
-FILES=main Objet Batiment ObjetMobile Unite MoteurPhysique Bouton BoutonImage BoutonTexte Serveur Client Interface EtreVivant Animal Plante
+FILES=main Objet Batiment ObjetMobile Unite MoteurPhysique Bouton BoutonImage BoutonTexte Serveur Client Interface EtreVivant Animal Plante Benchmark
 OBJECTS=$(FILES:%=bin/%.o)
 EXECUTABLE=bin/moteurPhysique
-vpath %.cpp source:source/Objet:source/Bouton:source/Reseau:source/Interface:source/EtreVivant
-vpath %.h source:source/Objet:source/Bouton:source/Reseau:source/Interface:source/EtreVivant
+vpath %.cpp source:source/Objet:source/Bouton:source/Reseau:source/Interface:source/EtreVivant:source/Benchmark
+vpath %.h source:source/Objet:source/Bouton:source/Reseau:source/Interface:source/EtreVivant:source/Benchmark
 
 all: $(EXECUTABLE)
 

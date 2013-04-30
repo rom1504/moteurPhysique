@@ -35,9 +35,9 @@ void Interface::actualiserSelection()
 	position.x=20;
 	position.y=550;
 	bool premier=true;
-    for(auto i=m_objets.begin();i!=m_objets.end();++i) if((*i)->selectionne() && (*i)->proprietaire()==m_proprietaire)
+    for(Objet * o : m_objets) if(o->selectionne() && o->proprietaire()==m_proprietaire)
 	{
-		boutonTemp=new BoutonObjet(position,sf::Vector2f(20,20),*((*i)->texture()),*i);
+        boutonTemp=new BoutonObjet(position,sf::Vector2f(20,20),*(o->texture()),o);
 		m_bouton.push_back(boutonTemp);
 		if(position.x>=380)
 		{
@@ -61,9 +61,9 @@ bool Interface::recevoirEvenement(sf::Event & evenement)
 	sf::Vector2f positionSourisEcran=sf::Vector2f(positionSourisEcrani);
 	if(evenement.type==sf::Event::MouseButtonReleased && evenement.mouseButton.button==sf::Mouse::Left)
 	{
-        for(auto i=m_bouton.begin();i!=m_bouton.end();++i) if((*i)->clicked(positionSourisEcran))
+        for(BoutonObjet * b : m_bouton) if(b->clicked(positionSourisEcran))
 		{
-			m_objetSelectionne=(*i)->objetLie(); // faire une apparance dans le menu pour la selection
+            m_objetSelectionne=b->objetLie(); // faire une apparance dans le menu pour la selection
 			if(m_objetSelectionne->type()!=0) m_boutonObjetMobile=false;
 		}
 		if(m_boutonConstruction->clicked(positionSourisEcran)) // voir si bien
@@ -103,19 +103,19 @@ void Interface::afficher()
 	l2.setSize(sf::Vector2f(600,600));
 	l2.setFillColor(sf::Color::White);
 	m_rendu->draw(l2);
-	if(m_boutonObjetMobile) m_rendu->draw(*m_boutonConstruction);
-    for(auto i=m_bouton.begin();i!=m_bouton.end();++i)
+    if(m_boutonObjetMobile) m_rendu->draw(*m_boutonConstruction);
+    for(BoutonObjet * b : m_bouton)
 	{	
-		if((*i)->objetLie()==m_objetSelectionne)
+        if(b->objetLie()==m_objetSelectionne)
 		{
 			sf::RectangleShape r1;
-			r1.setPosition((*i)->getPosition().x-1,(*i)->getPosition().y-1);
-			r1.setSize(sf::Vector2f((*i)->getGlobalBounds().width+1,(*i)->getGlobalBounds().height+1));
+            r1.setPosition(b->getPosition().x-1,b->getPosition().y-1);
+            r1.setSize(sf::Vector2f(b->getGlobalBounds().width+1,b->getGlobalBounds().height+1));
 			r1.setFillColor(sf::Color(255,255,255,0));
 			r1.setOutlineColor(sf::Color(0,0,255));
 			m_rendu->draw(r1);
 		}
-		m_rendu->draw(**i);
+        m_rendu->draw(*b);
 	}
     if(m_objetSelectionne!=NULL)
     {

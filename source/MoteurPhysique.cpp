@@ -12,6 +12,9 @@ MoteurPhysique::MoteurPhysique()
 	int positionBaseX=500+rand()%7001,positionBaseY=500+rand()%5001;
     positionBaseX=0;
     positionBaseY=0;
+
+
+
 	m_spriteSol.setPosition(0,0);
 	sf::Image tempImgChien;
 	sf::Image tempImgMaison;
@@ -73,6 +76,14 @@ MoteurPhysique::MoteurPhysique()
 		//m_threadServeur=new sf::Thread(&Serveur::Run, &m_serveur);
 		//m_threadServeur->launch();
 	//}
+
+    m_benchmarkBoucle=new Benchmark(sf::Vector2f(600,90),m_police,"Benchmark boucle");
+    m_benchmarkEvenement=new Benchmark(sf::Vector2f(600,110),m_police,"Benchmark evenement");
+    m_benchmarkTraitement=new Benchmark(sf::Vector2f(600,130),m_police,"Benchmark traitement");
+    m_benchmarkAfficher=new Benchmark(sf::Vector2f(600,150),m_police,"Benchmark afficher");
+    m_benchmarkTraiter1=new Benchmark(sf::Vector2f(600,170),m_police,"Benchmark traiter 1");
+    m_benchmarkTraiter2=new Benchmark(sf::Vector2f(600,190),m_police,"Benchmark traiter 2");
+
 	m_client=new Client(m_objets,m_imageChat,m_imageMaison,m_proprietaire);
 	//m_threadClient=new sf::Thread(&Client::Run, m_client);
 	//m_threadClient->launch();
@@ -110,27 +121,27 @@ void MoteurPhysique::gererLesEvenements()
 					float x=0,y=0;
 					int nombre=0;
 					std::vector<Objet*> objetSelectionneDansLordre;
-					for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->selectionne() && (*i)->proprietaire()==m_proprietaire) 
+                    for(Objet * o : m_objets) if(o->selectionne() && o->proprietaire()==m_proprietaire)
 					{
-						objetSelectionneDansLordre.push_back(*i);
+                        objetSelectionneDansLordre.push_back(o);
 						nombre++;
 					}
 					float racineNombre=sqrt(nombre);// voir le sort : semble faire des segmentation fault en plus de ne servir à rien... ( sert quand même mais ne fait pas exactement ce qu'on veut )
 					//std::sort(objetSelectionneDansLordre.begin(),objetSelectionneDansLordre.end(),triPlacement());
 						// utiliser une structure adapté au tri et peut être un algorithme tout pret puis trier dans l'ordre du plus en haut au plus en bas et du plus à gauche au plus à droite et compter le nb d'élement
 						// puis utiliser cette structure en la parcourant dans l'ordre pour choisir le placement des objets
-						//but de tout ça : positionnement des objets dans un carré et dans le bon ordre ( que celui qui est déjà vers la gauche se positionne vers la gauche et de même pour les autres positions initiales )
-					for(std::vector<Objet*>::iterator i=objetSelectionneDansLordre.begin();i!=objetSelectionneDansLordre.end();++i) 
+                        //but de tout ça : positionnement des objets dans un carré et dans le bon ordre ( que celui qui est déjà vers la gauche se positionne vers la gauche et de même pour les autres positions initiales )
+                    for(Objet * o : objetSelectionneDansLordre)
 					{
 						position=m_coordonneesSouris;
 						position.x+=x;
 						position.y+=y;
-						(*i)->agirAuClicDroit(position,sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift),0);
-						m_client->envoyer((*i)->proprietaire(),(*i)->numero(),position);// à placer dans Objet plutôt ? ( pour ne pas avoir à être appelé à chaque appel de agirAuClicDroit et compagnie )
-						x+=(*i)->largeur()*2;
-						if(x>=(*i)->largeur()*2*racineNombre) // possibilité de compter le nb d'objet pour faire un carré ( à faire plus tard par ex )
+                        o->agirAuClicDroit(position,sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift),0);
+                        m_client->envoyer(o->proprietaire(),o->numero(),position);// à placer dans Objet plutôt ? ( pour ne pas avoir à être appelé à chaque appel de agirAuClicDroit et compagnie )
+                        x+=o->largeur()*2;
+                        if(x>=o->largeur()*2*racineNombre) // possibilité de compter le nb d'objet pour faire un carré ( à faire plus tard par ex )
 						{
-							y+=(*i)->hauteur()*2;
+                            y+=o->hauteur()*2;
 							x=0;
 						}
 					}
@@ -150,15 +161,19 @@ void MoteurPhysique::gererLesEvenements()
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F3)) m_vue->zoom(1+m_tempsEcoule/2);
 	if(m_horloge.getElapsedTime().asMilliseconds()>10)
 	{
-		for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) m_client->envoyerObjet(*i);
+        for(Objet * o : m_objets) m_client->envoyerObjet(o);
 		m_horloge.restart();
 	}
 }
 
 void MoteurPhysique::traiter()
 {
-	std::vector<Objet*> tobjets=m_objets;
-	for(std::vector<Objet*>::iterator i=tobjets.begin(),e=tobjets.end();i!=e;++i) (*i)->agir();
+    m_benchmarkTraiter1->debut();
+    std::vector<Objet*> tobjets=m_objets;
+    std::for_each(tobjets.begin(),tobjets.end(),std::bind(&Objet::agir,_1));
+    m_benchmarkTraiter1->fin();
+
+    m_benchmarkTraiter2->debut();
 	if(m_rectangleSelectionAffiche)
 	{
 		float x1,x2,y1,y2;
@@ -167,9 +182,10 @@ void MoteurPhysique::traiter()
 		x2=std::max(m_positionDebutSelection.x,m_coordonneesSouris.x);
 		y2=std::max(m_positionDebutSelection.y,m_coordonneesSouris.y);
 		m_rectangleSelection=new sf::FloatRect(x1,y1,std::abs(x2-x1),std::abs(y2-y1));
-		for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if(!((sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) && (*i)->selectionne())) (*i)->setSelectionne(m_rectangleSelection->intersects((*i)->fcontour()));
+        for(Objet * o : m_objets) if(!((sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) && o->selectionne())) o->setSelectionne(m_rectangleSelection->intersects(o->fcontour()));
 		m_interface->actualiserSelection();
 	}
+    m_benchmarkTraiter2->fin();
 }
 
 void MoteurPhysique::afficherObjet(Objet * o)
@@ -195,8 +211,8 @@ void MoteurPhysique::afficher()
 		}
 	}
 	m_app->setView(*m_vue);
-    for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->type()==3) afficherObjet(*i);
-    for(std::vector<Objet*>::iterator i=m_objets.begin();i!=m_objets.end();++i) if((*i)->type()!=3) afficherObjet(*i);
+    for(Objet * o : m_objets) if(o->type()==3) afficherObjet(o);
+    for(Objet * o : m_objets) if(o->type()!=3) afficherObjet(o);
 
 	if(m_rectangleSelectionAffiche)
 	{
@@ -214,6 +230,12 @@ void MoteurPhysique::afficher()
 	m_app->setView(m_app->getDefaultView());
     m_app->draw(*(new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15)));
     m_app->draw(*(new BoutonTexte(sf::Vector2f(600,70),m_police,"Nombre de plantes : "+std::to_string(std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})),15)));
+    m_app->draw(*(m_benchmarkBoucle));
+    m_app->draw(*(m_benchmarkEvenement));
+    m_app->draw(*(m_benchmarkTraitement));
+    m_app->draw(*(m_benchmarkAfficher));
+    m_app->draw(*(m_benchmarkTraiter1));
+    m_app->draw(*(m_benchmarkTraiter2));
 	m_interface->afficher();
 	m_app->setView(*m_vue);
 	m_app->display();
@@ -222,9 +244,17 @@ void MoteurPhysique::afficher()
 void MoteurPhysique::lancer()
 {
 	while (m_app->isOpen())
-	{
-		gererLesEvenements();
+    {
+        m_benchmarkBoucle->debut();
+        m_benchmarkEvenement->debut();
+        gererLesEvenements();
+        m_benchmarkEvenement->fin();
+        m_benchmarkTraitement->debut();
 		traiter();
+        m_benchmarkTraitement->fin();
+        m_benchmarkAfficher->debut();
 		afficher();
+        m_benchmarkAfficher->fin();
+        m_benchmarkBoucle->fin();
 	}
 }

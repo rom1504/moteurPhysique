@@ -17,6 +17,7 @@
 #include <iostream>
 #include <cstdlib> 
 #include <ctime> 
+#include "Benchmark/Benchmark.h"
 
 class MoteurPhysique
 {
@@ -61,6 +62,13 @@ class MoteurPhysique
 	sf::Thread * m_threadServeur;
 	sf::Thread * m_threadClient;
 	sf::FloatRect * m_rectangleSelection;
+
+    Benchmark * m_benchmarkBoucle;
+    Benchmark * m_benchmarkEvenement;
+    Benchmark * m_benchmarkTraitement;
+    Benchmark * m_benchmarkAfficher;
+    Benchmark * m_benchmarkTraiter1;
+    Benchmark * m_benchmarkTraiter2;
 };
 
 #endif
