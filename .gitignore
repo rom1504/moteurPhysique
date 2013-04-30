@@ -4,6 +4,8 @@ session
 *.includes
 texte/
 bin/
+temp/
 Makefileold
 description.txt
 Makefileold2
+Makefileold3
