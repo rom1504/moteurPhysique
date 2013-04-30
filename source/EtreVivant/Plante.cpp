@@ -13,13 +13,25 @@ Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
 
 void Plante::agirAChaqueFois()
 {
+//    sf::Clock c;
+//    sf::Clock c1;
     if(m_horlogeVie.getElapsedTime().asSeconds()>10)
     {
         mourrir();
         return;
     }
     pousser();
-    if(m_energie>=m_energiePourReproduction && std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})<800) tenterDeSeReproduire();
+//    std::cout<<"c1: "<<c1.getElapsedTime().asMicroseconds()<<std::endl;
+    if(m_energie>=m_energiePourReproduction)
+    {
+//        sf::Clock c2;
+        int nbPlantes=std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;});
+//        std::cout<<"c2: "<<c2.getElapsedTime().asMicroseconds()<<std::endl;
+//        sf::Clock c3;
+        if(nbPlantes<600) tenterDeSeReproduire();
+//        std::cout<<"c3: "<<c3.getElapsedTime().asMicroseconds()<<std::endl;
+    }
+//    std::cout<<c.getElapsedTime().asMicroseconds()<<std::endl;
 }
 
 double Plante::etreMange(double quantiteMange)
@@ -62,7 +74,7 @@ void Plante::seReproduire(Plante * plante)
     if(x_>-500 && y_>-500 && x_+geneCote<500 && y_+geneCote<500)
     {
         Plante * plante_=new Plante((m_energiePourReproduction+plante->m_energiePourReproduction)/2, geneCote, *texture(), x_, y_, m_objets, m_proprietaire);
-        if(!std::any_of (m_objets.begin(), m_objets.end(), std::bind(std::mem_fn(&Objet::enCollision),plante_,_1)))
+        if(!std::any_of (m_objets.begin(), m_objets.end(), std::bind(std::mem_fn(&Objet::enCollision),plante_,_1)))//changer pour qu'elles puissent aparaitre sous une vache ?
         {
             m_objets.push_back(plante_);
             m_rechercheReproduction=false;

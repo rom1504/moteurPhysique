@@ -151,7 +151,10 @@ void Objet::agir()
 {
     m_tempsEcoule=m_horloge.getElapsedTime().asSeconds();
     m_horloge.restart();
+    //sf::Clock c1;
     agirAChaqueFois();
+    //std::cout<<c1.getElapsedTime().asMicroseconds()<<std::endl;
+    //sf::Clock c;
 	if(m_tacheEnCours)
 	{
 		continuerAAgirVraiment();
@@ -163,6 +166,7 @@ void Objet::agir()
 		agirVraiment(t);//tester pop_front
 		m_ordres.pop();
 	}
+    //std::cout<<c.getElapsedTime().asMicroseconds()<<std::endl;
 }
 
 void Objet::agirAChaqueFois()

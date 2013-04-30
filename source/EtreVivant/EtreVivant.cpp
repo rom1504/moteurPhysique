@@ -59,12 +59,18 @@ double EtreVivant::changerEnergie(double q)
 
 void EtreVivant::tenterDeSeReproduire()
 {
+//    sf::Clock c;
+//    sf::Clock c1;
     auto etreVivants=etresVivantsPouvantSeReproduire();
+//    std::cout<<"c1: "<<c1.getElapsedTime().asMicroseconds()<<std::endl;
+//    sf::Clock c2;
     std::vector<Objet*> objets;
     objets.assign(etreVivants.begin(),etreVivants.end());
     auto plusProche=plusProcheObjet(objets);
     m_rechercheReproduction=true;
     if(plusProche!=NULL) seReproduire(dynamic_cast<EtreVivant*>(plusProche));
+//    std::cout<<"c2: "<<c2.getElapsedTime().asMicroseconds()<<std::endl;
+//    std::cout<<c.getElapsedTime().asMicroseconds()<<std::endl;
 }
 
 void EtreVivant::mourrir()
@@ -120,10 +126,31 @@ EtreVivant * conv(Objet * o)
 
 std::vector<EtreVivant*> EtreVivant::etresVivantsPouvantSeReproduire() const
 {
-    std::vector<Objet*> etresVivants_=objetsDeType(type());
-    std::vector<EtreVivant*> etresVivants;
-    std::transform(etresVivants_.begin(),etresVivants_.end(),std::back_inserter(etresVivants),conv);
+//    sf::Clock c;
+//    sf::Clock c1;
+//    std::vector<Objet*> etresVivants_=objetsDeType(type());
+//    std::cout<<"c1: "<<c1.getElapsedTime().asMicroseconds()<<std::endl;
+//    sf::Clock c2;
+//    std::vector<EtreVivant*> etresVivants;
+//    std::transform(etresVivants_.begin(),etresVivants_.end(),std::back_inserter(etresVivants),conv);
+//    std::cout<<"c2: "<<c.getElapsedTime().asMicroseconds()<<std::endl;
+//    sf::Clock c3;
+//    std::vector<EtreVivant*> etresVivantsPouvantSeReproduire;
+//    std::copy_if(etresVivants.begin(), etresVivants.end(),std::back_inserter(etresVivantsPouvantSeReproduire), std::bind(std::mem_fn(&EtreVivant::rechercheReproduction),_1));
+//    std::cout<<"c3: "<<c.getElapsedTime().asMicroseconds()<<std::endl;
+//    std::cout<<c.getElapsedTime().asMicroseconds()<<std::endl;
+
+//    sf::Clock c;
     std::vector<EtreVivant*> etresVivantsPouvantSeReproduire;
-    std::copy_if(etresVivants.begin(), etresVivants.end(),std::back_inserter(etresVivantsPouvantSeReproduire), std::bind(std::mem_fn(&EtreVivant::rechercheReproduction),_1));
+    for(Objet * o: m_objets)
+    {
+        if(o->type()==type() && o!=this)
+        {
+            EtreVivant * e=conv(o);
+            if(e->rechercheReproduction()) etresVivantsPouvantSeReproduire.push_back(e);
+        }
+    }
+//    std::cout<<c.getElapsedTime().asMicroseconds()<<std::endl;
+
     return etresVivantsPouvantSeReproduire;
 }
