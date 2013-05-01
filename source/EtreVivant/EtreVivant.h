@@ -17,6 +17,7 @@ class EtreVivant: virtual public Objet
     static double myrand(double i,double facteur=1.1);
     static double moyenneAleatoire(double a,double b,double facteur=1.1);
     static double moyenneAleatoire_old(double a,double b,double facteur,double base);
+    double geneCote() const;
 
 
 	protected:

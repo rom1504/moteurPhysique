@@ -1,4 +1,5 @@
 #include "MoteurPhysique.h"
+#include <numeric>
 
 MoteurPhysique::MoteurPhysique()
 {
@@ -47,15 +48,15 @@ MoteurPhysique::MoteurPhysique()
 	
 	
 	m_vue->setCenter(positionBaseX+400,positionBaseY+300);
-// 	for(int xi=positionBaseX+50;xi<=positionBaseX+700;xi+=100)
-// 	{
-// 		for(int yi=positionBaseY+50;yi<=positionBaseY+500;yi+=100)
-// 		{
-// 			m_objets.push_back(new Unite(m_imageChat,m_imageMaison,(float)(xi),(float)(yi),28.0,28.0,350,m_objets,m_proprietaire));
-// 		}
-// 	}
+//    for(int xi=positionBaseX+50;xi<=positionBaseX+700;xi+=100)
+//    {
+//        for(int yi=positionBaseY+50;yi<=positionBaseY+500;yi+=100)
+//        {
+//            m_objets.push_back(new Unite(m_imageChat,m_imageMaison,(float)(xi),(float)(yi),28.0,28.0,350,m_objets,m_proprietaire));
+//        }
+//    }
 	
-// 	m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,50.0,50.0,m_objets,m_proprietaire,m_imageChat));
+//    m_objets.push_back(new Batiment(m_imageMaison,positionBaseX-150,positionBaseY-150,50.0,50.0,m_objets,m_proprietaire,m_imageChat));
 	
     m_objets.push_back(new Animal(3,20,85,m_imageVache,positionBaseX+110,positionBaseY+50,m_objets,m_proprietaire));
 
@@ -88,6 +89,7 @@ MoteurPhysique::MoteurPhysique()
 	//m_threadClient=new sf::Thread(&Client::Run, m_client);
 	//m_threadClient->launch();
 	m_horloge.restart();
+    m_horlogeTotale.restart();
 }
 
 void MoteurPhysique::gererLesEvenements()
@@ -227,7 +229,9 @@ void MoteurPhysique::afficher()
 
 
     //m_app->draw(*m_boutonTexte);
-	m_app->setView(m_app->getDefaultView());
+    m_app->setView(m_app->getDefaultView());
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(500,10),m_police,"Moyenne vitesse animaux : "+std::to_string([](std::pair<double,int> p){return p.first/p.second;}(std::accumulate(m_objets.begin(),m_objets.end(),std::make_pair(0.0,0),[](std::pair<double,int> p,Objet *o){return o->type()==2 ? std::make_pair(p.first+dynamic_cast<Animal*>(o)->geneVitesse(),p.second+1) : p;}))),15)));
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(500,30),m_police,"Moyenne largeur animaux : "+std::to_string([](std::pair<double,int> p){return p.first/p.second;}(std::accumulate(m_objets.begin(),m_objets.end(),std::make_pair(0.0,0),[](std::pair<double,int> p,Objet *o){return o->type()==2 ? std::make_pair(p.first+dynamic_cast<EtreVivant*>(o)->geneCote(),p.second+1) : p;}))),15)));
     m_app->draw(*(new BoutonTexte(sf::Vector2f(600,50),m_police,"Nombre d'objets : "+std::to_string(m_objets.size()),15)));
     m_app->draw(*(new BoutonTexte(sf::Vector2f(600,70),m_police,"Nombre de plantes : "+std::to_string(std::accumulate(m_objets.begin(),m_objets.end(),0,[](int n,Objet * o){return o->type()==3 ? n+1 : n;})),15)));
     m_app->draw(*(m_benchmarkBoucle));
@@ -236,6 +240,7 @@ void MoteurPhysique::afficher()
     m_app->draw(*(m_benchmarkAfficher));
     m_app->draw(*(m_benchmarkTraiter1));
     m_app->draw(*(m_benchmarkTraiter2));
+    m_app->draw(*(new BoutonTexte(sf::Vector2f(500,210),m_police,"Temps ecoule : "+std::to_string(m_horlogeTotale.getElapsedTime().asSeconds()),15)));
 	m_interface->afficher();
 	m_app->setView(*m_vue);
 	m_app->display();

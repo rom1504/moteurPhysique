@@ -59,6 +59,7 @@ class MoteurPhysique
 	std::string m_proprietaire;
 	sf::Clock m_horloge;
 	sf::Clock m_horlogeFrame;
+    sf::Clock m_horlogeTotale;
 	sf::Thread * m_threadServeur;
 	sf::Thread * m_threadClient;
 	sf::FloatRect * m_rectangleSelection;

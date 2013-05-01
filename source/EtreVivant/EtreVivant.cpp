@@ -13,6 +13,11 @@ void EtreVivant::agirVraiment(Tache tache)
 	
 }
 
+double EtreVivant::geneCote() const
+{
+    return m_geneCote;
+}
+
 std::map<std::string,std::string> EtreVivant::toStringMap() const
 {
     auto m=Objet::toStringMap();

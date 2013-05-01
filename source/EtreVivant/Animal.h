@@ -10,6 +10,7 @@ class Animal : public EtreVivant,public ObjetMobile
     Animal(double energie,const double geneCote,const double geneVitesse,const sf::Texture & image,float x,float y,std::vector<Objet*> & objets,std::string proprietaire,sf::Int8 numero=-1);
 
     void manger(Plante * p);
+    double geneVitesse() const;
 
     protected:
     void agirAChaqueFois();

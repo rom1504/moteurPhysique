@@ -8,7 +8,7 @@ Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
 ,EtreVivant(energie,geneCote,image,x,y,objets,proprietaire,numero)
 {
     m_type=3;
-    m_vitesseCroissance=m_geneCote/10;
+    m_vitesseCroissance=m_geneCote*m_geneCote/100;// /10
 }
 
 void Plante::agirAChaqueFois()

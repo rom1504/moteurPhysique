@@ -12,6 +12,11 @@ Objet(image,x,y,geneCote,geneCote,objets,proprietaire,numero)
     m_vitesseManger=m_geneCote;
 }
 
+double Animal::geneVitesse() const
+{
+    return m_geneVitesse;
+}
+
 double max(double a, double b)
 {
     return a>b ? a : b;
