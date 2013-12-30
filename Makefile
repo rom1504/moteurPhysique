@@ -1,4 +1,5 @@
 CCX=g++-4.8
+CC=gcc-4.8
 CFLAGS=-Wall -std=c++11
 LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 FILES=main Objet Batiment ObjetMobile Unite MoteurPhysique Bouton BoutonImage BoutonTexte Serveur Client Interface EtreVivant Animal Plante Benchmark
@@ -15,7 +16,7 @@ $(EXECUTABLE): $(OBJECTS) Makefile
 
 temp/%.o : %.cpp Makefile
 	$(CCX) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
-	gcc -MM $(CFLAGS) $< > temp/$*.d
+	$(CC) -MM $(CFLAGS) $< > temp/$*.d
 	@mv -f temp/$*.d temp/$*.d.tmp
 	@sed -e 's|.*:|$@:|' < temp/$*.d.tmp > temp/$*.d
 	@sed -e 's/.*://' -e 's/\\$$//' < temp/$*.d.tmp | fmt -1 | \
