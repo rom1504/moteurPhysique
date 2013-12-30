@@ -1,4 +1,4 @@
-CC=g++
+CCX=g++-4.8
 CFLAGS=-Wall -std=c++11
 LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 FILES=main Objet Batiment ObjetMobile Unite MoteurPhysique Bouton BoutonImage BoutonTexte Serveur Client Interface EtreVivant Animal Plante Benchmark
@@ -11,10 +11,10 @@ all: temp/empty bin/empty $(EXECUTABLE)
 -include $(OBJECTS:.o=.d)
 
 $(EXECUTABLE): $(OBJECTS) Makefile
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
+	$(CCX) $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
 
 temp/%.o : %.cpp Makefile
-	$(CC) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
+	$(CCX) -c -DSFML_DYNAMIC $(CFLAGS) $< -o $@
 	gcc -MM $(CFLAGS) $< > temp/$*.d
 	@mv -f temp/$*.d temp/$*.d.tmp
 	@sed -e 's|.*:|$@:|' < temp/$*.d.tmp > temp/$*.d
