@@ -1,5 +1,5 @@
-CCX=g++-4.8
-CC=gcc-4.8
+CCX=g++
+CC=gcc
 CFLAGS=-Wall -std=c++11
 LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 FILES=main Objet Batiment ObjetMobile Unite MoteurPhysique Bouton BoutonImage BoutonTexte Serveur Client Interface EtreVivant Animal Plante Benchmark
